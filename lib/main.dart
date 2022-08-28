@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_14/counter.dart';
+import 'package:flutter_application_14/currency.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -16,36 +16,72 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider<Counter>(
-          create: (context) => Counter(), child: const MyHomePage()),
+      home: ChangeNotifierProvider<Currency>(
+          create: (context) => Currency(), child: MyHomePage()),
     );
   }
 }
 
-class  MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key? key}) : super(key: key);
+
+  var selectedItem = "USD";
 
   @override
   Widget build(BuildContext context) {
-    final counter = Provider.of<Counter>(context, listen: false);
+    final currency = Provider.of<Currency>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Counter value: ${counter.value}"),
+        title: Text("Counter value: ${currency.selectedItem}"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Consumer<Counter>(
-              builder: (_, value, __) => Text("Counter value: ${counter.value}",
-              ),
-              ),
-            TextButton(
-                onPressed: () {
-                  counter.increment();
-                },
-                child: const Text("Increase")),
+
+            
+  Consumer<Currency>(
+                builder: (_, selectedItem, __) =>
+
+  
+  Text("Currency: ${currency.selectedItem}", style: const TextStyle(fontSize: 40),)
+  ),
+
+  const SizedBox(height: 50),
+
+            Consumer<Currency>(
+                builder: (_, selectedItem, __) => DropdownButton(
+                    value: currency.selectedItem,
+                    items: const [
+                      DropdownMenuItem(
+                        value: "USD",
+                        child: Text("USD"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Euro",
+                        child: Text("Euro"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Pound",
+                        child: Text("Pound"),
+                      ),
+                      DropdownMenuItem(
+                        value: "JPY",
+                        child: Text("JPY"),
+                      ),
+                    ],
+                    onChanged: (value2) {
+                      
+                     
+                      currency.selectItem(value2);
+                    
+                      
+                    })
+
+                
+                ),
+           
           ],
         ),
       ),
